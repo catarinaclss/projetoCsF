@@ -3,10 +3,25 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+
+
+@Entity(name = "Viagem")
 public class Viagem {
 	
-	List<Usuario> usuarios; 
-	Privacidade privacidade;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinTable
+	private List<Usuario> usuarios;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Privacidade privacidade;
+
+	
 	
 	/**
 	 * Construtor de viagem, por default, possui inicialmente privacidade publica e uma lista
@@ -25,5 +40,12 @@ public class Viagem {
 		this.usuarios.add(usuario);
 	}
 	
+	public void setPrivacidade(Privacidade privacidade){
+		this.privacidade = privacidade;
+	}
+	
+	public Privacidade getPrivacidade(){
+		return this.privacidade;
+	}
 	
 }

@@ -19,5 +19,9 @@ public class Limitada extends Publica {
 	public boolean podeParticipar(Usuario usuario, String senha) {
 		return this.senhaDeAcesso.equals(senha);
 	} 
+	
+	public String toString(){
+		return "Limitada";
+	}
 
 }

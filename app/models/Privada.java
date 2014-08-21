@@ -24,6 +24,9 @@ public class Privada extends Privacidade {
 		return usuariosPermitidos.contains(usuario);
 	}
 
+	public String toString(){
+		return "Privada";
+	}
 	/**
 	 * O usuario tem acesso liberado para participar da viagem, caso queira, se a mesma estiver visivel no sistema.
 	 */

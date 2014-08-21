@@ -19,4 +19,7 @@ public class Publica extends Privacidade{
 		return true;
 	}
 
+	public String toString(){
+		return "Publica";
+	}
 }
