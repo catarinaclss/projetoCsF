@@ -1,0 +1,34 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.index()
+
+# Login
+GET     /login                      controllers.Application.loginPage()
+POST    /login                      controllers.Application.autenticar()
+
+# Logout
+GET     /logout                     controllers.Application.logout()
+
+# Cadastro 
+GET     /cadastro/usuario			controllers.Application.cadastroDeUsuarioPage()
+POST    /cadastro/usuario			controllers.Application.cadastrarUsuario()
+
+# Viagem
+GET     /cadastro/viagem			controllers.Application.cadastroDeViagemPage()
+POST    /cadastro/viagem			controllers.Application.cadastrarViagem()
+POST	/viagem/participar			controllers.Application.participarDeViagem(id: Long)
+GET     /viagens					controllers.Application.minhasViagensPage()
+GET     /viagens/agenda				controllers.Application.agendaPage()
+GET     /viagem/editar				controllers.Application.editarViagemPage(id:Long)
+POST    /viagem/editar				controllers.Application.salvarAlteracoes(id:Long)
+GET	    /viagem/pesquisar			controllers.Application.resultadoPesquisa()
+
+#Usuario
+GET	    /usuario					controllers.Application.usuariosPage()
+GET	    /usuario/pesquisar			controllers.Application.resultadoPesquisaUsuario()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

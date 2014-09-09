@@ -1,0 +1,279 @@
+@(titulo:String, usuario: models.Usuario, pesquisa : List[List[models.Viagem]])
+
+@main(titulo){
+	<div class="navbar navbar-fixed-top header">
+		<div class="col-md-12">
+			<div class="navbar-header">
+	
+				<a href="/" class="navbar-brand">Viagens</a>
+				<button type="button" class="navbar-toggle" data-toggle="collapse"vdata-target="#navbar-collapse1">
+					<i class="glyphicon glyphicon-search"></i>
+				</button>
+	
+			</div>
+			<div class="collapse navbar-collapse" id="navbar-collapse1">
+				<form class="navbar-form pull-left" action="/viagem/pesquisar">
+					<div class="input-group" style="max-width: 470px;">
+						<input type="text" class="form-control" placeholder="buscar..."
+							name="pesquisa" id="pesquisa">
+						<div class="input-group-btn">
+							<button class="btn btn-default btn-primary" type="submit">
+								<i class="glyphicon glyphicon-search"></i>
+							</button>
+						</div>
+					</div>
+				</form>
+				<ul class="nav navbar-nav navbar-right">
+					
+					<li><a href="#" id="btnToggle"><i class="glyphicon glyphicon-th"></i></a></li>
+					<li><a href="/"><i class="glyphicon glyphicon-user"></i> @usuario.getEmail()</a></li>
+					<li><a href="/logout"><i class="glyphicon glyphicon-lock"></i> Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<div class="navbar navbar-default" id="subnav">
+		<div class="col-md-12">
+			<div class="navbar-header">
+	
+				<a href="#" style="margin-left: 15px;"
+					class="navbar-btn btn btn-default btn-plus dropdown-toggle"
+					data-toggle="dropdown"><i class="glyphicon glyphicon-home"
+					style="color: #dd1111;"></i> Home <small><i
+						class="glyphicon glyphicon-chevron-down"></i></small></a>
+				<ul class="nav dropdown-menu">
+					<li><a href="/usuario"><i class="glyphicon glyphicon-user"
+							style="color: #1111dd;"></i> Usuarios</a></li>
+					<li><a href="/"><i class="glyphicon glyphicon-dashboard"
+							style="color: #0000aa;"></i> Viagens</a></li>
+					<li><a href="/viagens/agenda"><i class="glyphicon glyphicon-inbox"
+							style="color: #11dd11;"></i> Agenda</a></li>
+					<li class="nav-divider"></li>
+					<li><a href="/viagens"><i class="glyphicon glyphicon-cog"
+							style="color: #dd1111;"></i> Editar Viagens</a></li>
+					<li><a href="/cadastro/viagem"><i class="glyphicon glyphicon-plus"></i>
+							Nova Viagem</a></li>
+				</ul>
+	
+	
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#navbar-collapse2">
+					<span class="sr-only"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+	
+			</div>
+			<div class="collapse navbar-collapse" id="navbar-collapse2">
+				<ul class="nav navbar-nav navbar-right">
+					<li class="active"><a href="/">Viagens</a></li>
+					<li><a href="/viagens" role="button" >Editar Viagens</a></li>
+					<li><a href="/cadastro/viagem" role="button" >Nova Viagem</a></li>
+					<li><a href="/viagens/agenda" role="button" >Agenda</a></li>
+					<li><a href="/usuario" role="button" >Usuarios</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<!--main-->
+	<div class="container" id="main">
+		@if(flash.contains("erro")) {
+					
+			<div class="alert alert-danger">
+				<strong>Ops!</strong> @flash.get("erro")
+			</div>
+					
+		}
+					
+		@if(flash.contains("success")) {
+			<div class="alert alert-success">
+				<strong>Ok!</strong> @flash.get("success")
+			</div>
+		}
+		
+		@for(viagens <- pesquisa){
+			<div class="row">
+				@for(viagem <- viagens){
+				<div class="col-md-4 col-sm-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							
+							<a href="#" class="pull-right">@viagem.getData().format("dd MMMM yyyy")</a>
+							
+							<h4>@viagem.getLocal</h4>
+						</div>
+						<div class="panel-body">
+							<p>@viagem.getDescricao</p>
+							<div class="clearfix"></div>
+							<hr>
+							<button type="button" class="btn btn-primary btn-xs pull-left"
+							data-toggle="modal" data-target="#visualizar-viagem-@viagem.getId()"
+							>@viagem.getParticipantes.size Participantes </button>
+							
+							<div class="modal fade" id="visualizar-viagem-@viagem.getId()">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal">
+														<span aria-hidden="true">&times;</span><span class="sr-only">Fechar</span>
+													</button>
+													<h4 class="modal-title">Participantes da Viagem para @viagem.getLocal</h4>
+												</div>
+									
+												<div class="modal-body">
+													<div class="panel-body">
+														<table class="table table-striped">
+															<thead>
+																<tr>
+																	<th width="40%">Nome</th>
+																	<th width="50%">E-mail</th>
+																</tr>
+															</thead>
+															<tbody>
+																@for(participante <- viagem.getParticipantes()){
+																	<tr>
+																		<td>@participante.getNome()</td>
+																		<td>@participante.getEmail()</td>
+																	</tr>
+																}
+															</tbody>
+														</table>
+													</div>
+												</div>
+									
+												<div class="modal-footer">
+													<button type="button" class="btn btn-primary" data-dismiss="modal">Sair</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<script>
+										$(function() {
+											$("#visualizar-viagem-@viagem.getId()").dialog({
+												modal : true,
+												buttons : {
+													Ok : function() {
+														$(this).dialog("close");
+													}
+												}
+											});
+										});
+									</script>
+							
+							@if(controllers.Application.estouNaListaPrivada(viagem.getId)){
+								@if(viagem.getParticipantes.contains(usuario)){
+									<button type="button" class="btn btn-success btn-xs pull-right" 
+									data-toggle="modal" data-target="#participar-viagem-@viagem.getId()" disabled>
+									<span class="glyphicon glyphicon-thumbs-up" style="color: #FFFFFF;"></span> Participando</button>
+								}else{
+									<button type="button" class="btn btn-success btn-xs pull-right" 
+									data-toggle="modal" data-target="#participar-viagem-@viagem.getId()">
+									<span class="glyphicon glyphicon-thumbs-up" style="color: #FFFFFF;"></span> Participar</button>
+								}
+							
+							}else{
+							
+								@if(viagem.getParticipantes.contains(usuario)){
+								<button type="button" class="btn btn-success btn-xs pull-right" 
+								data-toggle="modal" data-target="#participar-viagem-@viagem.getId()" disabled>
+								<span class="glyphicon glyphicon-thumbs-up" style="color: #FFFFFF;"></span> Participando</button>
+								}else{
+									<button type="button" class="btn btn-success btn-xs pull-right" 
+									data-toggle="modal" data-target="#participar-viagem-@viagem.getId()" disabled>
+									<span class="glyphicon glyphicon-thumbs-down" style="color: #FFFFFF;"></span> Nao Autorizado</button>
+								}
+							}
+							
+							@if(viagem.getEstrategia.toString().equals("ABERTA")){
+								<button type="button" class="btn btn-info btn-xs  pull-right" disabled>
+								<span class="glyphicon glyphicon-ok" style="color: #FFFFFF;"></span> Aberta</button>
+							}
+							
+							@if(viagem.getEstrategia.toString().equals("PRIVADA")){
+								<button type="button" class="btn btn-warning btn-xs  pull-right" disabled>
+								<span class="glyphicon glyphicon-lock" style="color: #FFFFFF;"></span> Privada</button>
+							}
+							@if(viagem.getEstrategia.toString().equals("LIMITADA")){
+								<button type="button" class="btn btn-danger btn-xs  pull-right" disabled>
+								<span class="glyphicon glyphicon-lock" style="color: #FFFFFF;"></span> Limitada</button>
+							}
+							
+							<div class="modal fade" id="participar-viagem-@viagem.getId()">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal">
+														<span aria-hidden="true">&times;</span><span class="sr-only">Fechar</span>
+													</button>
+													<h4 class="modal-title">
+														Olá, @usuario.getNome() <br> Gostaria de viajar para
+														@viagem.getLocal()?
+													</h4>
+												</div>
+									
+												<div class="modal-body">
+													<div class="panel-body">
+														<form class="form-horizontal" role="form" method="post"
+															action="@routes.Application.participarDeViagem(viagem.getId)">
+															<div class="form-group">
+																<label for="inputEmail3" class="col-sm-2 control-label">Nome</label>
+																<div class="col-sm-9">
+																	<input type="text" name="nome" class="form-control"
+																		id="inputEmail3" value="@usuario.getNome()" readonly="readonly">
+																</div>
+															</div>
+									
+															<div class="form-group">
+																<label for="inputEmail3" class="col-sm-2 control-label">E-mail</label>
+																<div class="col-sm-9">
+																	<input type="text" name="email" class="form-control"
+																		id="inputEmail3" value="@usuario.getEmail()" readonly="readonly">
+																</div>
+															</div>
+															@if(viagem.getEstrategia.toString().equals("LIMITADA")){
+																<div class="form-group">
+																	<label for="inputEmail3" class="col-sm-2 control-label">Código</label>
+																	<div class="col-sm-9">
+																		<input type="text" name="codigo" class="form-control"
+																			id="inputEmail3"
+																			placeholder="Essa viagem é limitada, para participar insira o código" autofocus>
+																	</div>
+																</div>
+															}
+															<div class="modal-footer">
+																<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+																<button type="submit" class="btn btn-success">Confirmar</button>
+												
+															</div>
+														</form>
+													</div>
+												</div>												
+											</div>
+										</div>
+									</div>
+				
+									<script>
+										$(function() {
+											$("#participar-viagem-@viagem.getId()").dialog({
+												modal : true,
+												buttons : {
+													Ok : function() {
+														$(this).dialog("close");
+													}
+												}
+											});
+										});
+									</script>
+						</div>
+					</div>
+				</div>
+				}
+			</div>
+		
+		}
+		</div>	
+}
+
