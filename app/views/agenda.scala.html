@@ -6,7 +6,8 @@
 			<div class="navbar-header">
 	
 				<a href="/" class="navbar-brand">Viagens</a>
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse1">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#navbar-collapse1">
 					<i class="glyphicon glyphicon-search"></i>
 				</button>
 	
@@ -67,10 +68,10 @@
 			</div>
 			<div class="collapse navbar-collapse" id="navbar-collapse2">
 				<ul class="nav navbar-nav navbar-right">
-					<li class="active"><a href="/">Viagens</a></li>
+					<li ><a href="/">Viagens</a></li>
 					<li><a href="/viagens" role="button" >Editar Viagens</a></li>
 					<li><a href="/cadastro/viagem" role="button" >Nova Viagem</a></li>
-					<li><a href="/viagens/agenda" role="button" >Agenda</a></li>
+					<li class="active"><a href="/viagens/agenda" role="button" >Agenda</a></li>
 					<li><a href="/usuario" role="button" >Usuarios</a></li>
 				</ul>
 			</div>
@@ -93,7 +94,7 @@
 			</div>
 		}
 		
-		@for(viagens <- controllers.Application.getAllViagensEmListas){
+		@for(viagens <- controllers.Application.agendaEmListas){
 			<div class="row">
 				@for(viagem <- viagens){
 				<div class="col-md-4 col-sm-6">
@@ -104,9 +105,8 @@
 							
 							<h4>@viagem.getLocal</h4>
 						</div>
-						<div class="panel-body" align="justify">
-							
-							<p>@viagem.getDescricao</p>						
+						<div class="panel-body">
+							<p>@viagem.getDescricao</p>
 							<div class="clearfix"></div>
 							<hr>
 							<button type="button" class="btn btn-primary btn-xs pull-left"
@@ -146,6 +146,7 @@
 									
 												<div class="modal-footer">
 													<button type="button" class="btn btn-primary" data-dismiss="modal">Sair</button>
+									
 												</div>
 											</div>
 										</div>
@@ -251,7 +252,9 @@
 															</div>
 														</form>
 													</div>
-												</div>												
+												</div>
+									
+												
 											</div>
 										</div>
 									</div>
@@ -268,13 +271,14 @@
 											});
 										});
 									</script>
+									
+									
 						</div>
 					</div>
 				</div>
 				}
 			</div>
-			
 		}
-		</div>
+		</div>	
 }
 

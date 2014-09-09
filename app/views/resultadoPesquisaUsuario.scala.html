@@ -1,0 +1,176 @@
+@(titulo:String, usuario: models.Usuario, pesquisa : List[List[models.Usuario]])
+
+@main(titulo){
+	<div class="navbar navbar-fixed-top header">
+		<div class="col-md-12">
+			<div class="navbar-header">
+	
+				<a href="/" class="navbar-brand">Viagens</a>
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse1">
+					<i class="glyphicon glyphicon-search"></i>
+				</button>
+	
+			</div>
+			<div class="collapse navbar-collapse" id="navbar-collapse1">
+				<form class="navbar-form pull-left" action="/usuario/pesquisar">
+					<div class="input-group" style="max-width: 470px;">
+						<input type="text" class="form-control" placeholder="buscar..."
+							name="pesquisa" id="pesquisa">
+						<div class="input-group-btn">
+							<button class="btn btn-default btn-primary" type="submit">
+								<i class="glyphicon glyphicon-search"></i>
+							</button>
+						</div>
+					</div>
+				</form>
+				<ul class="nav navbar-nav navbar-right">
+					
+					<li><a href="#" id="btnToggle"><i class="glyphicon glyphicon-th"></i></a></li>
+					<li><a href="/"><i class="glyphicon glyphicon-user"></i> @usuario.getEmail()</a></li>
+					<li><a href="/logout"><i class="glyphicon glyphicon-lock"></i> Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<div class="navbar navbar-default" id="subnav">
+		<div class="col-md-12">
+			<div class="navbar-header">
+	
+				<a href="#" style="margin-left: 15px;"
+					class="navbar-btn btn btn-default btn-plus dropdown-toggle"
+					data-toggle="dropdown"><i class="glyphicon glyphicon-home"
+					style="color: #dd1111;"></i> Home <small><i
+						class="glyphicon glyphicon-chevron-down"></i></small></a>
+				<ul class="nav dropdown-menu">
+					<li><a href="/usuario"><i class="glyphicon glyphicon-user"
+							style="color: #1111dd;"></i> Usuarios</a></li>
+					<li><a href="/"><i class="glyphicon glyphicon-dashboard"
+							style="color: #0000aa;"></i> Viagens</a></li>
+					<li><a href="/viagens/agenda"><i class="glyphicon glyphicon-inbox"
+							style="color: #11dd11;"></i> Agenda</a></li>
+					<li class="nav-divider"></li>
+					<li><a href="/viagens"><i class="glyphicon glyphicon-cog"
+							style="color: #dd1111;"></i> Editar Viagens</a></li>
+					<li><a href="/cadastro/viagem"><i class="glyphicon glyphicon-plus"></i>
+							Nova Viagem</a></li>
+				</ul>
+	
+	
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#navbar-collapse2">
+					<span class="sr-only"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+	
+			</div>
+			<div class="collapse navbar-collapse" id="navbar-collapse2">
+				<ul class="nav navbar-nav navbar-right">
+					<li class="active"><a href="/">Viagens</a></li>
+					<li><a href="/viagens" role="button" >Editar Viagens</a></li>
+					<li><a href="/cadastro/viagem" role="button" >Nova Viagem</a></li>
+					<li><a href="/viagens/agenda" role="button" >Agenda</a></li>
+					<li><a href="/usuario" role="button" >Usuarios</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<!--main-->
+	<div class="container" id="main">
+		@if(flash.contains("erro")) {
+					
+			<div class="alert alert-danger">
+				<strong>Ops!</strong> @flash.get("erro")
+			</div>
+					
+		}
+					
+		@if(flash.contains("success")) {
+			<div class="alert alert-success">
+				<strong>Ok!</strong> @flash.get("success")
+			</div>
+		}
+		
+		@for(usuarios <- pesquisa){
+			<div class="row">
+				@for(usuario <- usuarios){
+				<div class="col-md-4 col-sm-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							
+							<a href="#" class="pull-right">Usuario</a>
+							
+							<h4>@usuario.getNome</h4>
+						</div>
+						<div class="panel-body">
+							<p>@usuario.getEmail</p>
+							<div class="clearfix"></div>
+							<hr>
+							<button type="button" class="btn btn-primary btn-xs pull-right"
+							data-toggle="modal" data-target="#visualizar-viagem-@usuario.getEmail"
+							>@usuario.getViagens.size Viagens </button>
+							
+							<div class="modal fade" id="visualizar-viagens-@usuario.getEmail()">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal">
+														<span aria-hidden="true">&times;</span><span class="sr-only">Fechar</span>
+													</button>
+													<h4 class="modal-title">Viagens</h4>
+												</div>
+									
+												<div class="modal-body">
+													<div class="panel-body">
+														<table class="table table-striped">
+															<thead>
+																<tr>
+																	<th width="40%">Data</th>
+																	<th width="50%">Local</th>
+																</tr>
+															</thead>
+															<tbody>
+																@for(viagem <- usuario.getViagens){
+																	<tr>
+																		<td>@viagem.getData.format("dd mm yyyy")</td>
+																		<td>@viagem.getLocal</td>
+																	</tr>
+																}
+															</tbody>
+														</table>
+													</div>
+												</div>
+									
+												<div class="modal-footer">
+													<button type="button" class="btn btn-primary" data-dismiss="modal">Sair</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<script>
+										$(function() {
+											$("#visualizar-viagens-@usuario.getEmail()").dialog({
+												modal : true,
+												buttons : {
+													Ok : function() {
+														$(this).dialog("close");
+													}
+												}
+											});
+										});
+									</script>
+							
+							
+						</div>
+					</div>
+				</div>
+				}
+			</div>
+		
+		}
+		</div>	
+}
+

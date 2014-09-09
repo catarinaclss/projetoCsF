@@ -29,6 +29,8 @@ public interface GenericDAO {
 	 */
 	<T> T findByEntityId(Class<T> clazz, Long id);
 
+	<T> T findByEntityId(Class<T> clazz, String id);
+	
 	/**
 	 * Procura todos os objetos de uma certa classe pelo seu {@code className}
 	 * descrito na Entidade.
@@ -56,4 +58,6 @@ public interface GenericDAO {
 	 * Cria uma Query HQL
 	 */
 	Query createQuery(String query);
+	
+	
 }

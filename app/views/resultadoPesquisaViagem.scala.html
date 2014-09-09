@@ -1,4 +1,4 @@
-@(titulo:String, usuario: models.Usuario)
+@(titulo:String, usuario: models.Usuario, pesquisa : List[List[models.Viagem]])
 
 @main(titulo){
 	<div class="navbar navbar-fixed-top header">
@@ -6,7 +6,7 @@
 			<div class="navbar-header">
 	
 				<a href="/" class="navbar-brand">Viagens</a>
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse1">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"vdata-target="#navbar-collapse1">
 					<i class="glyphicon glyphicon-search"></i>
 				</button>
 	
@@ -93,7 +93,7 @@
 			</div>
 		}
 		
-		@for(viagens <- controllers.Application.getAllViagensEmListas){
+		@for(viagens <- pesquisa){
 			<div class="row">
 				@for(viagem <- viagens){
 				<div class="col-md-4 col-sm-6">
@@ -104,9 +104,8 @@
 							
 							<h4>@viagem.getLocal</h4>
 						</div>
-						<div class="panel-body" align="justify">
-							
-							<p>@viagem.getDescricao</p>						
+						<div class="panel-body">
+							<p>@viagem.getDescricao</p>
 							<div class="clearfix"></div>
 							<hr>
 							<button type="button" class="btn btn-primary btn-xs pull-left"
@@ -273,8 +272,8 @@
 				</div>
 				}
 			</div>
-			
+		
 		}
-		</div>
+		</div>	
 }
 
