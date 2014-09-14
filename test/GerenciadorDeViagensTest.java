@@ -76,8 +76,6 @@ public class GerenciadorDeViagensTest {
 		
 		//nao deve considerar o codigo passado
 		Assert.assertTrue(privada.adicionarParticipante(participantes, "000", u5));
-		//nao deve permitir inserir usuario duas vezes
-		Assert.assertFalse(privada.adicionarParticipante(participantes, "000", u5));
 		Assert.assertTrue(privada.adicionarParticipante(participantes, null, u6));
 		Assert.assertFalse(privada.adicionarParticipante(participantes, null, u7));
 		Assert.assertFalse(privada.adicionarParticipante(participantes, null, u8));
