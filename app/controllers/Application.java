@@ -109,7 +109,6 @@ public class Application extends Controller {
 
 		Usuario usuario = getUsuario(email);
 
-		// CASO USUARIO NAO ESTAJA CADASTRADO
 		if (usuario == null) {
 			flash("erro", "E-mail não cadastrado");
 			return redirect("/login");
