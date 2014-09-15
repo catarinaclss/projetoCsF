@@ -141,6 +141,10 @@ public class Viagem implements Comparable<Viagem>{
 	public void mudarParaLimitada(String codigo) throws Exception {
 		estrategia = new ViagemLimitada(codigo);
 	}
+	
+	public void mudarParaPrivada(List<Usuario> autorizados) throws Exception {
+		estrategia = new ViagemPrivada(autorizados);
+	}
 
 	@Override
 	public int hashCode() {

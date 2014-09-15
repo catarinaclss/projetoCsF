@@ -17,9 +17,7 @@ public class ViagemPrivada extends Estrategia {
 	@ManyToMany
 	private List<Usuario> autorizados = new ArrayList<Usuario>();
 	
-	public ViagemPrivada() {
-		
-	}
+	public ViagemPrivada() {}
 	
 	public ViagemPrivada(List<Usuario> autorizados) throws Exception {
 		isListaValida(autorizados);
